@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# run a whisper-amdgpu container to transcribe the files/audio.mp3 file
+
+# PLEASE NOTE
+# you might need to adapt the --device options to your system
+# check ls -l /dev/dri/by-path/ and lspci to identify your card
+
+docker run \
+  --rm \
+  --device /dev/kfd \
+  --device /dev/dri/renderD128 \
+  --security-opt seccomp=unconfined \
+  --volume $PWD/files:/mnt \
+  whisper-amdgpu:latest \
+  python3 /mnt/script.py 2>&1 | tee run.log
+
+
